@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/main/**/*", "src/preload/**/*"],
+  "exclude": ["node_modules", "dist", "src/renderer", "scripts"]
+}

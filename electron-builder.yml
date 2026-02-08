@@ -1,0 +1,39 @@
+appId: com.wazap.suite
+productName: WazapSuite
+directories:
+  output: out-v10
+  buildResources: resources
+
+files:
+  - dist/**/*
+  - node_modules/**/*
+  - package.json
+  - "!src/**"
+  - "!scripts/**"
+  - "!resources/**"
+  - "!**/tsconfig.json"
+  - "!**/README.md"
+  - "!**/*.ts"
+
+extraResources:
+  - from: resources/server.zip
+    to: server.zip
+
+asar: true
+
+win:
+  target: nsis
+  icon: resources/icon.png
+  requestedExecutionLevel: asInvoker
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: WazapSuite
+  runAfterFinish: true
+
+publish:
+  provider: github
+  owner: nidzammusthafa
+  repo: wazap-suite-releases

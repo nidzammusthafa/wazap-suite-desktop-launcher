@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WazapSuite Launcher</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="img/icon.png" alt="Logo" class="brand-logo">
+                <div class="brand-text">
+                    <h1>WazapSuite</h1>
+                    <span id="app-version">v1.0.0</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item active" data-tab="dashboard">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-tab="settings">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Settings</span>
+                </div>
+                <div class="nav-item" data-tab="logs">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span>System Logs</span>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>&copy; 2026 WazapSuite</p>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="window-header">
+                <div class="window-controls">
+                    <button class="control-btn" id="btn-minimize">─</button>
+                    <button class="control-btn close" id="btn-close">✕</button>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-container">
+                
+                <!-- LOADING VIEW -->
+                <div id="view-loading" class="view-section active">
+                    <div class="loading-center">
+                        <div class="spinner"></div>
+                        <p id="loading-text" class="text-muted">Initializing system...</p>
+                    </div>
+                </div>
+
+                <!-- LICENSE VIEW -->
+                <div id="view-license" class="view-section">
+                    <div class="license-center">
+                        <div class="license-box">
+                            <h2>Welcome Back</h2>
+                            <p>Please activate your license to continue.</p>
+                            
+                            <div class="input-group">
+                                <label class="input-label">License Key</label>
+                                <input type="text" id="license-input" class="input-field" placeholder="Enter your license key" spellcheck="false">
+                            </div>
+                            
+                            <button id="btn-activate" class="btn btn-primary w-full">Activate License</button>
+                            <p id="license-error" class="error-msg"></p>
+                            
+                            <div class="mt-4 text-left">
+                                <label class="text-sm text-muted">Hardware ID</label>
+                                <div class="input-row" style="margin-top:4px">
+                                    <input type="text" id="hwid-display" class="input-field" style="font-family:monospace;font-size:0.8rem;background:rgba(0,0,0,0.2)" readonly value="Generating...">
+                                    <button id="btn-copy-hwid" class="btn-icon" title="Copy">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DASHBOARD VIEW -->
+                <div id="view-dashboard" class="view-section">
+                    <h2 class="page-title">Dashboard</h2>
+                    
+                    <div class="dashboard-layout">
+                        <!-- Server Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+                                    Local Server
+                                </div>
+                                <div class="status-badge stopped" id="server-badge">
+                                    <div class="status-dot"></div>
+                                    <span id="server-status-text">Stopped</span>
+                                </div>
+                            </div>
+                            <p class="text-muted text-sm mb-4">Core backend service required for automation.</p>
+                            <div class="input-row">
+                                <button id="btn-start-server" class="btn btn-primary">Start Server</button>
+                                <button id="btn-stop-server" class="btn btn-danger" style="display:none">Stop Server</button>
+                                <button id="btn-restart-server" class="btn btn-secondary" style="display:none">Restart</button>
+                            </div>
+                        </div>
+
+                        <!-- Tunnel Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Cloud Tunnel
+                                </div>
+                                <div class="status-badge stopped" id="tunnel-badge">
+                                    <div class="status-dot"></div>
+                                    <span id="tunnel-status-text">Disconnected</span>
+                                </div>
+                            </div>
+                            <div id="tunnel-url-group" style="display:none; margin-bottom:16px;">
+                                <label class="input-label">Public URL</label>
+                                <div class="input-row">
+                                    <input type="text" id="tunnel-url-display" class="input-field" readonly style="font-family:monospace;font-size:0.85rem">
+                                    <button id="btn-copy-tunnel" class="btn-icon">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <button id="btn-start-tunnel" class="btn btn-primary">Connect Tunnel</button>
+                                <button id="btn-stop-tunnel" class="btn btn-danger" style="display:none">Disconnect</button>
+                            </div>
+                            <p id="tunnel-unavailable" class="error-msg text-sm mt-4" style="display:none">
+                                ⚠️ cloudflared not found.
+                            </p>
+                        </div>
+
+                        <!-- Action Area -->
+                        <button id="btn-open-app" class="btn btn-primary w-full" style="padding: 20px; font-size: 1.1rem;" disabled>
+                            Launch Application 🚀
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SETTINGS VIEW -->
+                <div id="view-settings" class="view-section">
+                    <h2 class="page-title">Settings</h2>
+                    
+                    <div class="dashboard-layout">
+                        <!-- License Info -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">License Information</div>
+                            </div>
+                            <div class="grid-2 mb-4">
+                                <div>
+                                    <label class="text-sm text-muted">Status</label>
+                                    <div class="text-success" style="color:var(--success)">Active</div>
+                                </div>
+                                <div>
+                                    <label class="text-sm text-muted">Expiration</label>
+                                    <div id="license-expiry">Loading...</div>
+                                </div>
+                            </div>
+                            <button id="btn-change-license" class="btn btn-secondary text-sm">Deactivate License</button>
+                        </div>
+
+                        <!-- Configuration -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Configuration</div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Server Port</label>
+                                <div class="input-row">
+                                    <input type="number" id="port-input" class="input-field" value="4000">
+                                    <button id="btn-save-port" class="btn btn-secondary">Save</button>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Chrome Executable Path (Optional)</label>
+                                <div class="input-row">
+                                    <input type="text" id="chrome-path-input" class="input-field" placeholder="Auto-detect" readonly>
+                                    <button id="btn-select-chrome" class="btn btn-secondary">Browse</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOGS VIEW -->
+                <div id="view-logs" class="view-section">
+                    <div class="flex-between">
+                        <h2 class="page-title" style="margin-bottom:0">System Logs</h2>
+                        <button id="btn-clear-logs" class="btn btn-secondary text-sm">Clear</button>
+                    </div>
+                    <div id="log-container" class="log-terminal">
+                        <!-- Logs -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+    (async function() {
+        // --- Elements ---
+        const els = {
+            // Navigation
+            navItems: document.querySelectorAll('.nav-item'),
+            views: {
+                loading: document.getElementById('view-loading'),
+                license: document.getElementById('view-license'),
+                dashboard: document.getElementById('view-dashboard'),
+                settings: document.getElementById('view-settings'),
+                logs: document.getElementById('view-logs')
+            },
+            
+            // License
+            licenseInput: document.getElementById('license-input'),
+            btnActivate: document.getElementById('btn-activate'),
+            licenseError: document.getElementById('license-error'),
+            hwidDisplay: document.getElementById('hwid-display'),
+            btnCopyHwid: document.getElementById('btn-copy-hwid'),
+            licenseExpiry: document.getElementById('license-expiry'),
+            btnChangeLicense: document.getElementById('btn-change-license'),
+
+            // Server
+            serverBadge: document.getElementById('server-badge'),
+            serverStatusText: document.getElementById('server-status-text'),
+            btnStart: document.getElementById('btn-start-server'),
+            btnStop: document.getElementById('btn-stop-server'),
+            btnRestart: document.getElementById('btn-restart-server'),
+
+            // Tunnel
+            tunnelBadge: document.getElementById('tunnel-badge'),
+            tunnelStatusText: document.getElementById('tunnel-status-text'),
+            tunnelUrlGroup: document.getElementById('tunnel-url-group'),
+            tunnelUrlDisplay: document.getElementById('tunnel-url-display'),
+            btnStartTunnel: document.getElementById('btn-start-tunnel'),
+            btnStopTunnel: document.getElementById('btn-stop-tunnel'),
+            btnCopyTunnel: document.getElementById('btn-copy-tunnel'),
+            tunnelUnavailable: document.getElementById('tunnel-unavailable'),
+
+            // Config
+            portInput: document.getElementById('port-input'),
+            btnSavePort: document.getElementById('btn-save-port'),
+            chromePathInput: document.getElementById('chrome-path-input'),
+            btnSelectChrome: document.getElementById('btn-select-chrome'),
+            btnOpenApp: document.getElementById('btn-open-app'),
+
+            // Logs
+            logContainer: document.getElementById('log-container'),
+            btnClearLogs: document.getElementById('btn-clear-logs'),
+
+            // App
+            appVersion: document.getElementById('app-version'),
+            btnMinimize: document.getElementById('btn-minimize'),
+            btnClose: document.getElementById('btn-close')
+        };
+
+        // --- State ---
+        let currentView = 'loading';
+        let serverState = 'idle';
+        let tunnelState = 'idle';
+        let tunnelUrl = null;
+        let currentPort = 4000;
+        let hostedClientUrl = 'https://wazap-suite.vercel.app';
+
+        // --- Navigation ---
+        function switchView(viewName) {
+            // Hide all
+            Object.values(els.views).forEach(el => {
+                el.classList.remove('active');
+                // el.style.display = 'none'; // CSS handles this via active class
+            });
+
+            // Show target
+            if (els.views[viewName]) {
+                els.views[viewName].classList.add('active');
+                currentView = viewName;
+            }
+
+            // Update sidebar
+            els.navItems.forEach(item => {
+                if (item.dataset.tab === viewName) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Sidebar click
+        els.navItems.forEach(item => {
+            item.onclick = () => {
+                // Prevent navigation if stuck in license or loading
+                if (currentView === 'loading' || currentView === 'license') return;
+                switchView(item.dataset.tab);
+            };
+        });
+
+        // --- Logging ---
+        function addLog(msg) {
+            const div = document.createElement('div');
+            div.className = 'log-entry';
+            const time = new Date().toLocaleTimeString();
+            const cleanMsg = (msg || '').replace(/\[\d+m/g, ''); // Strip ANSI colors
+            
+            if (cleanMsg.toLowerCase().includes('error')) div.classList.add('error');
+            else div.classList.add('info');
+            
+            div.textContent = `[${time}] ${cleanMsg}`;
+            els.logContainer.appendChild(div);
+            els.logContainer.scrollTop = els.logContainer.scrollHeight;
+        }
+
+        if (els.btnClearLogs) els.btnClearLogs.onclick = () => {
+            els.logContainer.innerHTML = '';
+        };
+
+        // --- Status Updates ---
+        function updateServerStatus(status) {
+            serverState = status;
+            els.serverStatusText.textContent = status.toUpperCase();
+            
+            // Reset Classes
+            els.serverBadge.className = 'status-badge';
+            
+            // Buttons
+            els.btnStart.style.display = 'none';
+            els.btnStop.style.display = 'none';
+            els.btnRestart.style.display = 'none';
+            els.btnOpenApp.disabled = true;
+
+            switch(status) {
+                case 'running':
+                    els.serverBadge.classList.add('running');
+                    els.btnStop.style.display = 'inline-block';
+                    els.btnRestart.style.display = 'inline-block';
+                    els.btnOpenApp.disabled = false;
+                    break;
+                case 'stopped':
+                case 'idle':
+                case 'error':
+                    els.serverBadge.classList.add('stopped');
+                    els.btnStart.style.display = 'inline-block';
+                    break;
+                default: // starting, extracting, etc
+                    els.serverBadge.classList.add('loading');
+                    els.btnStop.style.display = 'inline-block'; // Allow stop during start attempt
+                    break;
+            }
+        }
+
+        function updateTunnelStatus(status) {
+            tunnelState = status;
+            
+            els.tunnelBadge.className = 'status-badge';
+            els.btnStartTunnel.style.display = 'none';
+            els.btnStopTunnel.style.display = 'none';
+
+            switch(status) {
+                case 'running':
+                    els.tunnelStatusText.textContent = 'Online';
+                    els.tunnelBadge.classList.add('running');
+                    els.btnStopTunnel.style.display = 'inline-block';
+                    break;
+                case 'starting':
+                    els.tunnelStatusText.textContent = 'Connecting...';
+                    els.tunnelBadge.classList.add('loading');
+                    els.btnStopTunnel.style.display = 'inline-block';
+                    break;
+                case 'error':
+                    els.tunnelStatusText.textContent = 'Error';
+                    els.tunnelBadge.classList.add('stopped');
+                    els.btnStartTunnel.style.display = 'inline-block';
+                    break;
+                default:
+                    els.tunnelStatusText.textContent = 'Offline';
+                    els.tunnelBadge.classList.add('stopped');
+                    els.btnStartTunnel.style.display = 'inline-block';
+            }
+        }
+
+        function updateTunnelUrl(url) {
+            tunnelUrl = url;
+            if (url) {
+                els.tunnelUrlGroup.style.display = 'block';
+                els.tunnelUrlDisplay.value = url;
+            } else {
+                els.tunnelUrlGroup.style.display = 'none';
+            }
+        }
+
+        // --- Actions ---
+        function getLaunchUrl() {
+            const apiUrl = tunnelUrl || `http://localhost:${currentPort}`;
+            return `${hostedClientUrl}?apiUrl=${encodeURIComponent(apiUrl)}`;
+        }
+
+        async function init() {
+            // Wait for DOM
+            await new Promise(r => setTimeout(r, 100));
+            
+            // Window Controls
+            els.btnMinimize.onclick = () => window.wazap.window.minimize();
+            els.btnClose.onclick = () => window.wazap.window.close();
+
+            // Version
+            try {
+                const ver = await window.wazap.app.getVersion();
+                els.appVersion.textContent = `v${ver}`;
+            } catch(e){}
+
+            // 1. Handshake
+            try {
+                addLog('Connecting to backend...');
+                await window.wazap.app.notifyReady();
+                addLog('Connected.');
+            } catch(e) {
+                addLog('Connection failed: ' + e);
+            }
+
+            // 2. Event Listeners
+            window.wazap.server.onLog(addLog);
+            window.wazap.server.onStatusChange(updateServerStatus);
+            window.wazap.tunnel.onStatusChange(updateTunnelStatus);
+            window.wazap.tunnel.onUrlChange(updateTunnelUrl);
+
+            // 3. Load Config
+            try {
+                currentPort = await window.wazap.server.getPort();
+                els.portInput.value = currentPort;
+                
+                const chromePath = await window.wazap.config.get('chromePath');
+                if (chromePath) els.chromePathInput.value = chromePath;
+                
+                hostedClientUrl = await window.wazap.config.getHostedUrl();
+            } catch(e) {}
+
+            // 4. Check Tunnel Availability
+            try {
+                const available = await window.wazap.tunnel.isAvailable();
+                if (!available) {
+                    els.tunnelUnavailable.style.display = 'block';
+                    els.btnStartTunnel.disabled = true;
+                }
+            } catch(e) {}
+
+            // 5. Check License
+            try {
+                const hwid = await window.wazap.license.getHWID();
+                els.hwidDisplay.value = hwid;
+                
+                // Auto check
+                const saved = await window.wazap.license.checkSaved();
+                if (saved && saved.valid) {
+                    setupDashboard(saved);
+                    window.wazap.server.start();
+                } else {
+                    switchView('license');
+                }
+            } catch(e) {
+                addLog('License check error: ' + e);
+                switchView('license');
+            }
+
+            // --- Bindings ---
+            
+            // License
+            els.btnActivate.onclick = async () => {
+                const key = els.licenseInput.value.trim();
+                if (!key) return;
+                
+                els.btnActivate.disabled = true;
+                els.btnActivate.textContent = 'Verifying...';
+                
+                try {
+                    const res = await window.wazap.license.validate(key);
+                    if (res.valid) {
+                        setupDashboard(res);
+                        window.wazap.server.start();
+                    } else {
+                        els.licenseError.textContent = res.reason || 'Invalid key';
+                    }
+                } catch(e) {
+                    els.licenseError.textContent = 'Connection error';
+                } finally {
+                    els.btnActivate.disabled = false;
+                    els.btnActivate.textContent = 'Activate License';
+                }
+            };
+
+            els.btnCopyHwid.onclick = () => {
+                navigator.clipboard.writeText(els.hwidDisplay.value);
+            };
+
+            els.btnChangeLicense.onclick = async () => {
+                if (confirm('Are you sure you want to deactivate?')) {
+                    await window.wazap.license.clear();
+                    await window.wazap.server.stop();
+                    await window.wazap.tunnel.stop();
+                    switchView('license');
+                }
+            };
+
+            // Server
+            els.btnStart.onclick = () => window.wazap.server.start();
+            els.btnStop.onclick = () => window.wazap.server.stop();
+            els.btnRestart.onclick = async () => {
+                await window.wazap.server.stop();
+                setTimeout(() => window.wazap.server.start(), 1000);
+            };
+
+            // Tunnel
+            els.btnStartTunnel.onclick = async () => {
+                if (serverState !== 'running') {
+                    alert('Please start the server first.');
+                    return;
+                }
+                await window.wazap.tunnel.start();
+            };
+            els.btnStopTunnel.onclick = () => window.wazap.tunnel.stop();
+            els.btnCopyTunnel.onclick = () => {
+                navigator.clipboard.writeText(els.tunnelUrlDisplay.value);
+            };
+
+            // Config
+            els.btnSavePort.onclick = async () => {
+                const p = parseInt(els.portInput.value);
+                if (p > 0 && p < 65536) {
+                    await window.wazap.server.setPort(p);
+                    currentPort = p;
+                    alert('Port saved. Restart server to apply.');
+                }
+            };
+
+            els.btnSelectChrome.onclick = async () => {
+                const path = await window.wazap.config.selectChrome();
+                if (path) {
+                    els.chromePathInput.value = path;
+                    await window.wazap.config.set('chromePath', path);
+                }
+            };
+
+            // Launch
+            els.btnOpenApp.onclick = () => {
+                window.wazap.app.openExternal(getLaunchUrl());
+            };
+        }
+
+        function setupDashboard(license) {
+            switchView('dashboard');
+            if (license.expiresAt) {
+                els.licenseExpiry.textContent = new Date(license.expiresAt).toLocaleDateString();
+            } else {
+                els.licenseExpiry.textContent = 'Lifetime';
+            }
+        }
+
+        init();
+    })();
+    </script>
+</body>
+</html>

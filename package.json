@@ -1,0 +1,42 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.renderer.json && node scripts/copy-assets.js",
+    "build:server": "node scripts/prepare.js",
+    "dev": "npm run build && electron .",
+    "start": "npm run dev",
+    "pack": "npm run build && npm run build:server && electron-builder --dir",
+    "dist": "npm run build && npm run build:server && electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+    "rebuild": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "better-sqlite3": "^12.6.2",
+    "electron-log": "^5.4.3",
+    "electron-squirrel-startup": "^1.0.1",
+    "electron-store": "^8.2.0",
+    "electron-updater": "^6.7.3",
+    "ntp-client": "^0.5.3",
+    "systeminformation": "^5.30.7"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.2.1",
+    "@types/ntp-client": "^0.5.0",
+    "@types/systeminformation": "^3.23.1",
+    "electron": "^40.2.1",
+    "electron-builder": "^26.7.0",
+    "png-to-ico": "^3.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
